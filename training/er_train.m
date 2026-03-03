@@ -544,27 +544,78 @@ int main(int argc, char *argv[]) {
         // ── Adam update ──────────────────────────────────────────────────────
         float gsc = 1.0f / steps_batch;
         adam_t++;
+
+        // Scale accumulated gradients by 1/steps_batch
         for (int L = 0; L < NLAYERS; L++) {
             LayerGrads *g = &grads[L];
-            for(size_t i=0;i<WQ_SZ;i++){g->Wq[i]*=gsc; g->Wk[i]*=gsc; g->Wv[i]*=gsc; g->Wo[i]*=gsc;}
-            for(size_t i=0;i<W1_SZ;i++) g->W1[i]*=gsc;
-            for(size_t i=0;i<W2_SZ;i++) g->W2[i]*=gsc;
-            for(size_t i=0;i<W3_SZ;i++) g->W3[i]*=gsc;
-            for(int i=0;i<DIM;i++){g->rms_att[i]*=gsc; g->rms_ffn[i]*=gsc;}
-            adam_update(lw[L].Wq,      g->Wq,      &la[L].Wq,      adam_t, lr, adam_b1, adam_b2, adam_eps);
-            adam_update(lw[L].Wk,      g->Wk,      &la[L].Wk,      adam_t, lr, adam_b1, adam_b2, adam_eps);
-            adam_update(lw[L].Wv,      g->Wv,      &la[L].Wv,      adam_t, lr, adam_b1, adam_b2, adam_eps);
-            adam_update(lw[L].Wo,      g->Wo,      &la[L].Wo,      adam_t, lr, adam_b1, adam_b2, adam_eps);
-            adam_update(lw[L].W1,      g->W1,      &la[L].W1,      adam_t, lr, adam_b1, adam_b2, adam_eps);
-            adam_update(lw[L].W2,      g->W2,      &la[L].W2,      adam_t, lr, adam_b1, adam_b2, adam_eps);
-            adam_update(lw[L].W3,      g->W3,      &la[L].W3,      adam_t, lr, adam_b1, adam_b2, adam_eps);
-            adam_update(lw[L].rms_att, g->rms_att, &la[L].rms_att, adam_t, lr, adam_b1, adam_b2, adam_eps);
-            adam_update(lw[L].rms_ffn, g->rms_ffn, &la[L].rms_ffn, adam_t, lr, adam_b1, adam_b2, adam_eps);
+            vDSP_vsmul(g->Wq,     1, &gsc, g->Wq,     1, WQ_SZ);
+            vDSP_vsmul(g->Wk,     1, &gsc, g->Wk,     1, WQ_SZ);
+            vDSP_vsmul(g->Wv,     1, &gsc, g->Wv,     1, WQ_SZ);
+            vDSP_vsmul(g->Wo,     1, &gsc, g->Wo,     1, WO_SZ);
+            vDSP_vsmul(g->W1,     1, &gsc, g->W1,     1, W1_SZ);
+            vDSP_vsmul(g->W2,     1, &gsc, g->W2,     1, W2_SZ);
+            vDSP_vsmul(g->W3,     1, &gsc, g->W3,     1, W3_SZ);
+            vDSP_vsmul(g->rms_att,1, &gsc, g->rms_att,1, DIM);
+            vDSP_vsmul(g->rms_ffn,1, &gsc, g->rms_ffn,1, DIM);
         }
-        for(int i=0;i<DIM;i++) grms_final[i]*=gsc;
-        adam_update(rms_final, grms_final, &arms_final, adam_t, lr, adam_b1, adam_b2, adam_eps);
-        for(size_t i=0;i<(size_t)VOCAB*DIM;i++) gembed[i]*=gsc;
-        adam_update(embed, gembed, &aembed, adam_t, lr, adam_b1, adam_b2, adam_eps);
+        vDSP_vsmul(grms_final, 1, &gsc, grms_final, 1, DIM);
+        vDSP_vsmul(gembed,     1, &gsc, gembed,     1, (vDSP_Length)VOCAB*DIM);
+
+        // Gradient norm clipping (max_norm = 1.0)
+        float gnorm_sq = 0.0f, _sq;
+        for (int L = 0; L < NLAYERS; L++) {
+            LayerGrads *g = &grads[L];
+            vDSP_svesq(g->Wq,     1, &_sq, WQ_SZ); gnorm_sq += _sq;
+            vDSP_svesq(g->Wk,     1, &_sq, WQ_SZ); gnorm_sq += _sq;
+            vDSP_svesq(g->Wv,     1, &_sq, WQ_SZ); gnorm_sq += _sq;
+            vDSP_svesq(g->Wo,     1, &_sq, WO_SZ); gnorm_sq += _sq;
+            vDSP_svesq(g->W1,     1, &_sq, W1_SZ); gnorm_sq += _sq;
+            vDSP_svesq(g->W2,     1, &_sq, W2_SZ); gnorm_sq += _sq;
+            vDSP_svesq(g->W3,     1, &_sq, W3_SZ); gnorm_sq += _sq;
+            vDSP_svesq(g->rms_att,1, &_sq, DIM);   gnorm_sq += _sq;
+            vDSP_svesq(g->rms_ffn,1, &_sq, DIM);   gnorm_sq += _sq;
+        }
+        vDSP_svesq(grms_final, 1, &_sq, DIM);                    gnorm_sq += _sq;
+        vDSP_svesq(gembed,     1, &_sq, (vDSP_Length)VOCAB*DIM); gnorm_sq += _sq;
+        float gnorm = sqrtf(gnorm_sq);
+
+        if (!isfinite(gnorm)) {
+            printf("  [WARNING: non-finite gradient norm — skipping Adam update]\n");
+            fflush(stdout);
+        } else {
+            if (gnorm > 1.0f) {
+                float cs = 1.0f / gnorm;
+                for (int L = 0; L < NLAYERS; L++) {
+                    LayerGrads *g = &grads[L];
+                    vDSP_vsmul(g->Wq,     1, &cs, g->Wq,     1, WQ_SZ);
+                    vDSP_vsmul(g->Wk,     1, &cs, g->Wk,     1, WQ_SZ);
+                    vDSP_vsmul(g->Wv,     1, &cs, g->Wv,     1, WQ_SZ);
+                    vDSP_vsmul(g->Wo,     1, &cs, g->Wo,     1, WO_SZ);
+                    vDSP_vsmul(g->W1,     1, &cs, g->W1,     1, W1_SZ);
+                    vDSP_vsmul(g->W2,     1, &cs, g->W2,     1, W2_SZ);
+                    vDSP_vsmul(g->W3,     1, &cs, g->W3,     1, W3_SZ);
+                    vDSP_vsmul(g->rms_att,1, &cs, g->rms_att,1, DIM);
+                    vDSP_vsmul(g->rms_ffn,1, &cs, g->rms_ffn,1, DIM);
+                }
+                vDSP_vsmul(grms_final,1, &cs, grms_final,1, DIM);
+                vDSP_vsmul(gembed,    1, &cs, gembed,    1, (vDSP_Length)VOCAB*DIM);
+                printf("  [grad clip: %.3f → 1.0]\n", gnorm);
+            }
+            for (int L = 0; L < NLAYERS; L++) {
+                LayerGrads *g = &grads[L];
+                adam_update(lw[L].Wq,      g->Wq,      &la[L].Wq,      adam_t, lr, adam_b1, adam_b2, adam_eps);
+                adam_update(lw[L].Wk,      g->Wk,      &la[L].Wk,      adam_t, lr, adam_b1, adam_b2, adam_eps);
+                adam_update(lw[L].Wv,      g->Wv,      &la[L].Wv,      adam_t, lr, adam_b1, adam_b2, adam_eps);
+                adam_update(lw[L].Wo,      g->Wo,      &la[L].Wo,      adam_t, lr, adam_b1, adam_b2, adam_eps);
+                adam_update(lw[L].W1,      g->W1,      &la[L].W1,      adam_t, lr, adam_b1, adam_b2, adam_eps);
+                adam_update(lw[L].W2,      g->W2,      &la[L].W2,      adam_t, lr, adam_b1, adam_b2, adam_eps);
+                adam_update(lw[L].W3,      g->W3,      &la[L].W3,      adam_t, lr, adam_b1, adam_b2, adam_eps);
+                adam_update(lw[L].rms_att, g->rms_att, &la[L].rms_att, adam_t, lr, adam_b1, adam_b2, adam_eps);
+                adam_update(lw[L].rms_ffn, g->rms_ffn, &la[L].rms_ffn, adam_t, lr, adam_b1, adam_b2, adam_eps);
+            }
+            adam_update(rms_final, grms_final, &arms_final, adam_t, lr, adam_b1, adam_b2, adam_eps);
+            adam_update(embed, gembed, &aembed, adam_t, lr, adam_b1, adam_b2, adam_eps);
+        }
 
         printf("  [batch %d: compile=%.0fms train=%.1fms (%.1fms/step) compiles=%d]\n",
                steps_batch, cms, tms, tms/steps_batch, g_compile_count);
