@@ -1,0 +1,166 @@
+=== ER Extraction Fine-tuning (ANE) ===
+dim=768 hidden=2048 heads=12 seq=512 vocab=32000 layers=12
+Params:  109.53M  |  LR=1.00e-04  |  Steps=5000
+Kernels: 72 (60 weight-bearing + 12 static)
+Accum:   50 steps per recompile
+
+Loaded ER dataset: 1680 examples from er_train.bin
+  input_len:  [25 .. 169]  output_len: [31 .. 263]  exceeds_seq: 0
+
+  Compiling layer 1/12... (12 compiles)
+  Compiling layer 2/12... (17 compiles)
+  Compiling layer 3/12... (22 compiles)
+  Compiling layer 4/12... (27 compiles)
+  Compiling layer 5/12... (32 compiles)
+  Compiling layer 6/12... (37 compiles)
+  Compiling layer 7/12... (42 compiles)
+  Compiling layer 8/12... (47 compiles)
+  Compiling layer 9/12... (52 compiles)
+  Compiling layer 10/12... (57 compiles)
+  Compiling layer 11/12... (62 compiles)
+  Compiling layer 12/12... (67 compiles)
+  Compiled 60 kernels in 4577ms                    
+step 0     loss=10.3678  (output positions 48-124)
+{"type":"step","step":0,"loss":10.367789,"loss_start":48,"loss_end":124,"t_ane":26.711,"t_io":17.205,"t_cls":26.467,"t_elem":35.271,"t_rms":0.159,"t_cblas_wait":0.002}
+{"type":"step","step":1,"loss":10.423018,"loss_start":71,"loss_end":204,"t_ane":24.061,"t_io":13.462,"t_cls":22.640,"t_elem":35.115,"t_rms":0.188,"t_cblas_wait":0.002}
+{"type":"step","step":2,"loss":10.388583,"loss_start":85,"loss_end":205,"t_ane":25.035,"t_io":10.808,"t_cls":20.122,"t_elem":33.189,"t_rms":0.157,"t_cblas_wait":0.002}
+{"type":"step","step":3,"loss":10.309405,"loss_start":70,"loss_end":172,"t_ane":25.636,"t_io":9.472,"t_cls":18.834,"t_elem":32.006,"t_rms":0.141,"t_cblas_wait":0.002}
+{"type":"step","step":4,"loss":10.402823,"loss_start":60,"loss_end":231,"t_ane":26.623,"t_io":8.759,"t_cls":18.095,"t_elem":31.284,"t_rms":0.131,"t_cblas_wait":0.002}
+{"type":"step","step":5,"loss":10.411713,"loss_start":68,"loss_end":273,"t_ane":25.754,"t_io":8.143,"t_cls":17.769,"t_elem":31.397,"t_rms":0.126,"t_cblas_wait":0.002}
+{"type":"step","step":6,"loss":10.419892,"loss_start":54,"loss_end":207,"t_ane":25.173,"t_io":7.720,"t_cls":17.502,"t_elem":31.168,"t_rms":0.122,"t_cblas_wait":0.003}
+{"type":"step","step":7,"loss":10.421794,"loss_start":59,"loss_end":144,"t_ane":25.262,"t_io":7.424,"t_cls":17.205,"t_elem":30.952,"t_rms":0.118,"t_cblas_wait":0.003}
+{"type":"step","step":8,"loss":10.441259,"loss_start":54,"loss_end":194,"t_ane":25.439,"t_io":7.214,"t_cls":16.955,"t_elem":30.824,"t_rms":0.115,"t_cblas_wait":0.003}
+{"type":"step","step":9,"loss":10.360785,"loss_start":58,"loss_end":164,"t_ane":25.803,"t_io":7.060,"t_cls":16.760,"t_elem":30.578,"t_rms":0.113,"t_cblas_wait":0.003}
+{"type":"step","step":10,"loss":10.384548,"loss_start":81,"loss_end":224,"t_ane":26.029,"t_io":6.926,"t_cls":16.602,"t_elem":30.458,"t_rms":0.111,"t_cblas_wait":0.003}
+{"type":"step","step":11,"loss":10.465456,"loss_start":69,"loss_end":201,"t_ane":25.639,"t_io":6.760,"t_cls":16.540,"t_elem":30.461,"t_rms":0.111,"t_cblas_wait":0.003}
+{"type":"step","step":12,"loss":10.339703,"loss_start":55,"loss_end":158,"t_ane":25.682,"t_io":6.671,"t_cls":16.428,"t_elem":30.446,"t_rms":0.110,"t_cblas_wait":0.003}
+{"type":"step","step":13,"loss":10.483562,"loss_start":79,"loss_end":232,"t_ane":25.762,"t_io":6.587,"t_cls":16.332,"t_elem":30.443,"t_rms":0.109,"t_cblas_wait":0.003}
+{"type":"step","step":14,"loss":10.373049,"loss_start":50,"loss_end":120,"t_ane":25.750,"t_io":6.519,"t_cls":16.252,"t_elem":30.344,"t_rms":0.108,"t_cblas_wait":0.003}
+{"type":"step","step":15,"loss":10.387927,"loss_start":72,"loss_end":171,"t_ane":25.937,"t_io":6.457,"t_cls":16.171,"t_elem":30.196,"t_rms":0.107,"t_cblas_wait":0.003}
+{"type":"step","step":16,"loss":10.211735,"loss_start":99,"loss_end":255,"t_ane":25.664,"t_io":6.367,"t_cls":16.240,"t_elem":30.244,"t_rms":0.112,"t_cblas_wait":0.003}
+{"type":"step","step":17,"loss":10.449761,"loss_start":44,"loss_end":166,"t_ane":25.691,"t_io":6.317,"t_cls":16.169,"t_elem":30.153,"t_rms":0.111,"t_cblas_wait":0.003}
+{"type":"step","step":18,"loss":10.340426,"loss_start":53,"loss_end":173,"t_ane":25.802,"t_io":6.274,"t_cls":16.107,"t_elem":30.097,"t_rms":0.110,"t_cblas_wait":0.003}
+{"type":"step","step":19,"loss":10.432804,"loss_start":55,"loss_end":176,"t_ane":26.002,"t_io":6.246,"t_cls":16.048,"t_elem":30.007,"t_rms":0.109,"t_cblas_wait":0.003}
+{"type":"step","step":20,"loss":10.491158,"loss_start":48,"loss_end":128,"t_ane":26.146,"t_io":6.225,"t_cls":16.003,"t_elem":29.969,"t_rms":0.108,"t_cblas_wait":0.003}
+{"type":"step","step":21,"loss":10.415866,"loss_start":69,"loss_end":160,"t_ane":26.230,"t_io":6.181,"t_cls":15.975,"t_elem":29.939,"t_rms":0.107,"t_cblas_wait":0.002}
+{"type":"step","step":22,"loss":10.408965,"loss_start":52,"loss_end":187,"t_ane":26.267,"t_io":6.160,"t_cls":15.932,"t_elem":29.864,"t_rms":0.107,"t_cblas_wait":0.002}
+{"type":"step","step":23,"loss":10.417813,"loss_start":51,"loss_end":126,"t_ane":26.347,"t_io":6.133,"t_cls":15.891,"t_elem":29.817,"t_rms":0.106,"t_cblas_wait":0.002}
+{"type":"step","step":24,"loss":10.488015,"loss_start":86,"loss_end":294,"t_ane":26.327,"t_io":6.116,"t_cls":15.855,"t_elem":29.787,"t_rms":0.106,"t_cblas_wait":0.002}
+{"type":"step","step":25,"loss":10.477971,"loss_start":50,"loss_end":119,"t_ane":26.344,"t_io":6.096,"t_cls":15.828,"t_elem":29.728,"t_rms":0.105,"t_cblas_wait":0.002}
+{"type":"step","step":26,"loss":10.331020,"loss_start":116,"loss_end":374,"t_ane":26.370,"t_io":6.075,"t_cls":15.798,"t_elem":29.724,"t_rms":0.105,"t_cblas_wait":0.002}
+{"type":"step","step":27,"loss":10.427990,"loss_start":77,"loss_end":213,"t_ane":26.404,"t_io":6.056,"t_cls":15.767,"t_elem":29.706,"t_rms":0.104,"t_cblas_wait":0.002}
+{"type":"step","step":28,"loss":10.404929,"loss_start":78,"loss_end":214,"t_ane":26.412,"t_io":6.041,"t_cls":15.756,"t_elem":29.672,"t_rms":0.104,"t_cblas_wait":0.002}
+{"type":"step","step":29,"loss":10.374502,"loss_start":54,"loss_end":151,"t_ane":26.446,"t_io":6.023,"t_cls":15.727,"t_elem":29.647,"t_rms":0.104,"t_cblas_wait":0.002}
+{"type":"step","step":30,"loss":10.416065,"loss_start":63,"loss_end":223,"t_ane":26.443,"t_io":6.007,"t_cls":15.703,"t_elem":29.640,"t_rms":0.103,"t_cblas_wait":0.002}
+{"type":"step","step":31,"loss":10.359753,"loss_start":75,"loss_end":177,"t_ane":26.569,"t_io":5.999,"t_cls":15.684,"t_elem":29.649,"t_rms":0.103,"t_cblas_wait":0.002}
+{"type":"step","step":32,"loss":10.460714,"loss_start":73,"loss_end":182,"t_ane":26.505,"t_io":5.979,"t_cls":15.658,"t_elem":29.602,"t_rms":0.103,"t_cblas_wait":0.002}
+{"type":"step","step":33,"loss":10.392778,"loss_start":67,"loss_end":172,"t_ane":26.529,"t_io":5.968,"t_cls":15.639,"t_elem":29.565,"t_rms":0.103,"t_cblas_wait":0.002}
+{"type":"step","step":34,"loss":10.422671,"loss_start":71,"loss_end":131,"t_ane":26.573,"t_io":5.961,"t_cls":15.617,"t_elem":29.514,"t_rms":0.102,"t_cblas_wait":0.002}
+{"type":"step","step":35,"loss":10.418275,"loss_start":41,"loss_end":190,"t_ane":26.571,"t_io":5.948,"t_cls":15.600,"t_elem":29.513,"t_rms":0.102,"t_cblas_wait":0.002}
+{"type":"step","step":36,"loss":10.450703,"loss_start":50,"loss_end":213,"t_ane":26.588,"t_io":5.932,"t_cls":15.588,"t_elem":29.482,"t_rms":0.102,"t_cblas_wait":0.002}
+{"type":"step","step":37,"loss":10.423465,"loss_start":48,"loss_end":161,"t_ane":26.589,"t_io":5.921,"t_cls":15.575,"t_elem":29.486,"t_rms":0.102,"t_cblas_wait":0.002}
+{"type":"step","step":38,"loss":10.484163,"loss_start":92,"loss_end":233,"t_ane":26.543,"t_io":5.910,"t_cls":15.558,"t_elem":29.474,"t_rms":0.101,"t_cblas_wait":0.002}
+{"type":"step","step":39,"loss":10.454761,"loss_start":70,"loss_end":217,"t_ane":26.592,"t_io":5.903,"t_cls":15.546,"t_elem":29.444,"t_rms":0.101,"t_cblas_wait":0.002}
+{"type":"step","step":40,"loss":10.397460,"loss_start":69,"loss_end":187,"t_ane":26.586,"t_io":5.887,"t_cls":15.529,"t_elem":29.420,"t_rms":0.101,"t_cblas_wait":0.002}
+{"type":"step","step":41,"loss":10.436537,"loss_start":89,"loss_end":220,"t_ane":26.613,"t_io":5.876,"t_cls":15.516,"t_elem":29.420,"t_rms":0.101,"t_cblas_wait":0.002}
+{"type":"step","step":42,"loss":10.420037,"loss_start":98,"loss_end":238,"t_ane":26.623,"t_io":5.869,"t_cls":15.507,"t_elem":29.429,"t_rms":0.101,"t_cblas_wait":0.002}
+{"type":"step","step":43,"loss":10.389494,"loss_start":50,"loss_end":147,"t_ane":26.592,"t_io":5.857,"t_cls":15.495,"t_elem":29.417,"t_rms":0.101,"t_cblas_wait":0.002}
+{"type":"step","step":44,"loss":10.344096,"loss_start":133,"loss_end":293,"t_ane":26.603,"t_io":5.845,"t_cls":15.484,"t_elem":29.401,"t_rms":0.101,"t_cblas_wait":0.002}
+{"type":"step","step":45,"loss":10.373910,"loss_start":54,"loss_end":133,"t_ane":26.595,"t_io":5.838,"t_cls":15.474,"t_elem":29.426,"t_rms":0.100,"t_cblas_wait":0.002}
+{"type":"step","step":46,"loss":10.389190,"loss_start":67,"loss_end":122,"t_ane":26.631,"t_io":5.831,"t_cls":15.466,"t_elem":29.405,"t_rms":0.100,"t_cblas_wait":0.002}
+{"type":"step","step":47,"loss":10.418444,"loss_start":49,"loss_end":200,"t_ane":26.633,"t_io":5.822,"t_cls":15.462,"t_elem":29.410,"t_rms":0.100,"t_cblas_wait":0.002}
+{"type":"step","step":48,"loss":10.447098,"loss_start":73,"loss_end":267,"t_ane":26.669,"t_io":5.819,"t_cls":15.468,"t_elem":29.372,"t_rms":0.100,"t_cblas_wait":0.002}
+{"type":"step","step":49,"loss":10.490273,"loss_start":43,"loss_end":158,"t_ane":26.668,"t_io":5.810,"t_cls":15.458,"t_elem":29.351,"t_rms":0.100,"t_cblas_wait":0.002}
+  [batch 50: compile=4577ms train=9922.5ms (198.5ms/step) compiles=72]
+{"type":"batch","batch":50,"compile_ms":4577.3,"train_ms":9922.5,"ms_per_step":198.5}
+[exec() restart step=50 compiles=72 loss=10.4903]
+[RESUMED step=50 loss=10.4903 lr=1.00e-04]
+Loaded ER dataset: 1680 examples from er_train.bin
+  input_len:  [25 .. 169]  output_len: [31 .. 263]  exceeds_seq: 0
+
+  Compiling layer 1/12... (12 compiles)
+  Compiling layer 2/12... (17 compiles)
+  Compiling layer 3/12... (22 compiles)
+  [compile] FAIL: no error
+  [compile] FAIL: no error
+
+Compile failed at layer 2
+  [compile failed — sleeping 30s before retry]
+[exec() restart step=50 compiles=100 loss=999.0000]
+[RESUMED step=50 loss=999.0000 lr=1.00e-04]
+Loaded ER dataset: 1680 examples from er_train.bin
+  input_len:  [25 .. 169]  output_len: [31 .. 263]  exceeds_seq: 0
+
+  Compiling layer 1/12... (12 compiles)
+  Compiling layer 2/12... (17 compiles)
+  Compiling layer 3/12... (22 compiles)
+  Compiling layer 4/12... (27 compiles)
+  [compile] FAIL: no error
+
+Compile failed at layer 3
+  [compile failed — sleeping 30s before retry]
+[exec() restart step=50 compiles=100 loss=999.0000]
+[RESUMED step=50 loss=999.0000 lr=1.00e-04]
+Loaded ER dataset: 1680 examples from er_train.bin
+  input_len:  [25 .. 169]  output_len: [31 .. 263]  exceeds_seq: 0
+
+  Compiling layer 1/12... (12 compiles)
+  Compiling layer 2/12... (17 compiles)
+  Compiling layer 3/12... (22 compiles)
+  Compiling layer 4/12... (27 compiles)
+  [compile] FAIL: no error
+  [compile] FAIL: no error
+  [compile] FAIL: no error
+
+Compile failed at layer 3
+  [compile failed — sleeping 30s before retry]
+[exec() restart step=50 compiles=100 loss=999.0000]
+[RESUMED step=50 loss=999.0000 lr=1.00e-04]
+Loaded ER dataset: 1680 examples from er_train.bin
+  input_len:  [25 .. 169]  output_len: [31 .. 263]  exceeds_seq: 0
+
+  Compiling layer 1/12... (12 compiles)
+  Compiling layer 2/12... (17 compiles)
+  Compiling layer 3/12... (22 compiles)
+  Compiling layer 4/12... (27 compiles)
+  Compiling layer 5/12... (32 compiles)
+  [compile] FAIL: no error
+  [compile] FAIL: no error
+
+Compile failed at layer 4
+  [compile failed — sleeping 30s before retry]
+[exec() restart step=50 compiles=100 loss=999.0000]
+[RESUMED step=50 loss=999.0000 lr=1.00e-04]
+Loaded ER dataset: 1680 examples from er_train.bin
+  input_len:  [25 .. 169]  output_len: [31 .. 263]  exceeds_seq: 0
+
+  Compiling layer 1/12... (12 compiles)
+  Compiling layer 2/12... (17 compiles)
+  Compiling layer 3/12... (22 compiles)
+  Compiling layer 4/12... (27 compiles)
+  Compiling layer 5/12... (32 compiles)
+  Compiling layer 6/12... (37 compiles)
+  [compile] FAIL: no error
+  [compile] FAIL: no error
+  [compile] FAIL: no error
+  [compile] FAIL: no error
+
+Compile failed at layer 5
+  [compile failed — sleeping 30s before retry]
+[exec() restart step=50 compiles=100 loss=999.0000]
+[RESUMED step=50 loss=999.0000 lr=1.00e-04]
+Loaded ER dataset: 1680 examples from er_train.bin
+  input_len:  [25 .. 169]  output_len: [31 .. 263]  exceeds_seq: 0
+
+  Compiling layer 1/12... (12 compiles)
+  Compiling layer 2/12... (17 compiles)
+  Compiling layer 3/12... (22 compiles)
+  Compiling layer 4/12... (27 compiles)
+  Compiling layer 5/12... (32 compiles)
+  Compiling layer 6/12... (37 compiles)
+  [compile] FAIL: no error
+  [compile] FAIL: no error
+  [compile] FAIL: no error
+
+Compile failed at layer 5
+  [compile failed — sleeping 30s before retry]
