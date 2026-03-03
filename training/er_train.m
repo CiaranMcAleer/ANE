@@ -319,7 +319,11 @@ int main(int argc, char *argv[]) {
                 compile_ok = false; break;
             }
         }
-        if (!compile_ok) { g_compile_count = MAX_COMPILES; continue; }
+        if (!compile_ok) {
+            printf("  [compile failed — sleeping 30s before retry]\n"); fflush(stdout);
+            sleep(30);
+            g_compile_count = MAX_COMPILES; continue;
+        }
 
         for (int L = 0; L < NLAYERS; L++) {
             if (!sdpaBwd2[L]) {
@@ -583,8 +587,8 @@ int main(int argc, char *argv[]) {
             printf("  [WARNING: non-finite gradient norm — skipping Adam update]\n");
             fflush(stdout);
         } else {
-            if (gnorm > 1.0f) {
-                float cs = 1.0f / gnorm;
+            if (gnorm > 5.0f) {
+                float cs = 5.0f / gnorm;
                 for (int L = 0; L < NLAYERS; L++) {
                     LayerGrads *g = &grads[L];
                     vDSP_vsmul(g->Wq,     1, &cs, g->Wq,     1, WQ_SZ);
@@ -599,7 +603,7 @@ int main(int argc, char *argv[]) {
                 }
                 vDSP_vsmul(grms_final,1, &cs, grms_final,1, DIM);
                 vDSP_vsmul(gembed,    1, &cs, gembed,    1, (vDSP_Length)VOCAB*DIM);
-                printf("  [grad clip: %.3f → 1.0]\n", gnorm);
+                printf("  [grad clip: %.3f → 5.0]\n", gnorm);
             }
             for (int L = 0; L < NLAYERS; L++) {
                 LayerGrads *g = &grads[L];

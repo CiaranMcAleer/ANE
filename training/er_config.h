@@ -7,6 +7,8 @@
 #include "stories_config.h"
 #undef SEQ
 #define SEQ 512  // Longer context: instruction (≤256) + entity/relation output (≤200)
+#undef ACCUM_STEPS
+#define ACCUM_STEPS 50  // 50 steps/batch → ~100 exec() restarts for 5000 steps (vs 500)
 
 // ── ER dataset format ────────────────────────────────────────────────────────
 // Binary file written by data_gen/tokenize_er.py

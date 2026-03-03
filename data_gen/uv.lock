@@ -8,7 +8,9 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "huggingface-hub" },
+    { name = "numpy" },
     { name = "requests" },
+    { name = "safetensors" },
     { name = "sentencepiece" },
     { name = "tqdm" },
     { name = "transformers" },
@@ -17,7 +19,9 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "huggingface-hub", specifier = ">=0.22" },
+    { name = "numpy", specifier = ">=1.24" },
     { name = "requests", specifier = ">=2.31" },
+    { name = "safetensors", specifier = ">=0.4" },
     { name = "sentencepiece", specifier = ">=0.2" },
     { name = "tqdm", specifier = ">=4.66" },
     { name = "transformers", specifier = ">=4.40" },
